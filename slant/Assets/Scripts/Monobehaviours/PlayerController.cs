@@ -21,6 +21,37 @@ public class PlayerController : MonoBehaviour
     /* Update is called once per frame. */
     private void Update()
     {
+        #if UNITY_ANDROID
+        Vector2 deltaPosition = Input.GetTouch(0).deltaPosition;
+        if (deltaPosition.sqrMagnitude != 0)
+        {
+            // Swipe has occurred.
+            if (Mathf.Sign(deltaPosition.x) > 0)
+            {
+                // Upwards Swipe.
+                if (!aboveSlant)
+                {
+                    // Move to above the slant.
+                    player.transform.SetPositionAndRotation(upperPosition.position, upperPosition.rotation);
+                    anim.SetBool("aboveSlant", true);
+                    aboveSlant = true;
+                }
+            }
+            else if (Mathf.Sign(deltaPosition.x) < 0)
+            {
+                // Downwards Swipe.
+                if (aboveSlant)
+                {
+                    // Move to below the slant.
+                    player.transform.SetPositionAndRotation(lowerPosition.position, lowerPosition.rotation);
+                    anim.SetBool("aboveSlant", false);
+                    aboveSlant = false;
+                }
+            }
+        }
+        #endif
+
+        #if UNITY_STANDALONE_WIN
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (aboveSlant)
@@ -38,5 +69,6 @@ public class PlayerController : MonoBehaviour
                 aboveSlant = true;
             }
         }
+        #endif
     }
 }
