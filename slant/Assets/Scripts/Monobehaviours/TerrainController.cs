@@ -23,8 +23,8 @@ public class TerrainController : MonoBehaviour
         terrainActive.Add(startingTerrain);
     }
 
-    /* Update is called once per frame. */
-    private void Update()
+    /* FixedUpdate is called once per frame after Update. */
+    private void FixedUpdate()
     {
         for (int i = 0; i < terrainActive.Count; ++i)
         {
